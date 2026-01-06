@@ -1,17 +1,34 @@
 import express from 'express';
-import transitRoutes from './routes/transitRoutes';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import transitRoutes from './routes/transitRoutes';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI || '';
 
+// Se usa para interpretar lo que contiene el archivo JSON en las solicitudes
 app.use(express.json());
 
-// Lista de rutas base
+// Rutas
 app.use('/transit', transitRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+// Conexión a Base de Datos y arranque del servidor
+console.log("⏳ Intentando conectar a MongoDB...");
+
+mongoose.connect(MONGO_URI)
+    .then(() => {
+        console.log('✅ Conectado exitosamente a MongoDB Atlas');
+        app.listen(PORT, () => {
+            console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('❌ Error CRÍTICO conectando a MongoDB:', err);
+        // Esto permite que el servidor siga corriendo incluso sin conexión a la base de datos
+        app.listen(PORT, () => {
+            console.log(`⚠️ Servidor corriendo SIN BASE DE DATOS en http://localhost:${PORT}`);
+        });
+    });
