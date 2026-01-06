@@ -29,11 +29,28 @@ export const getEta = async (req: Request, res: Response) => {
     }
 };
 
+// guarda un reporte de incidente
 export const reportIncident = async (req: Request, res: Response) => {
     try {
+        // 1. log para mostrar datos del body
+        console.log("📩 Datos recibidos en el body:", req.body);
+
         const incident = await transitService.createIncident(req.body);
         res.status(201).json(incident);
     } catch (error) {
+        // 2. Indica falla en mongoDB
+        console.error("❌ Error EXACTO de MongoDB:", error);
+        
         res.status(500).json({ error: "No se pudo guardar el reporte de incidente" });
+    }
+};
+
+// obtiene todos los incidentes reportados
+export const getIncidents = async (req: Request, res: Response) => {
+    try {
+        const incidents = await transitService.getAllIncidents();
+        res.json(incidents);
+    } catch (error) {
+        res.status(500).json({ error: "Error obteniendo reportes" });
     }
 };
