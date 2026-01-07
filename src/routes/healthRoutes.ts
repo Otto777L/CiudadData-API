@@ -4,7 +4,7 @@ import { getMortalityRate, getLifeExpectancy } from '../controllers/healthContro
 
 const router = Router();
 
-router.get('/mortality/:country', getMortalityRate);
-router.get('/life-expectancy/:country', getLifeExpectancy);
+router.get('/mortality/:country', getMortalityRate); // obtiene la tasa de mortalidad
+router.get('/life-expectancy/:country', getLifeExpectancy); // obtiene la esperanza de vida
 
 export default router;
