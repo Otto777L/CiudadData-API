@@ -1,4 +1,3 @@
-// src/routes/healthRoutes.ts
 import { Router } from 'express';
 import { getMortalityRate, getLifeExpectancy } from '../controllers/healthController';
 
