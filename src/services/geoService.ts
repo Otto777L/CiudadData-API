@@ -1,7 +1,7 @@
-// src/services/geoService.ts
 import axios from 'axios';
+import GeoModel, { IGeo } from '../models/GeoData';
 
-const USER_GEO = 'Norbe'; // Usuario de ella
+const USER_GEO = 'Norbe'; 
 
 export const getCityData = async (city: string) => {
     try {
@@ -43,4 +43,15 @@ export const getWorldBankPopulation = async (countryCode: string) => {
         console.error("Error en WorldBank Service:", error);
         throw error;
     }
+};
+
+// Crea un nuevo registro geográfico en la base de datos 
+export const createGeoRecord = async (data: Partial<IGeo>) => {
+    const newRecord = new GeoModel(data);
+    return await newRecord.save();
+};
+
+// Obtiene todos los registros geográficos guardados 
+export const getAllGeoRecords = async () => {
+    return await GeoModel.find(); 
 };
