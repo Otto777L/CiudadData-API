@@ -1,8 +1,7 @@
-// src/services/healthService.ts
 import axios from 'axios';
 import https from 'https';
+import HealthModel, { IHealth } from '../models/HealthData';
 
-// Este agente permite saltarse errores de certificado SSL de la OMS (es el truco de ella)
 const agent = new https.Agent({ rejectUnauthorized: false });
 
 export const fetchOMSData = async (indicator: string, country: string) => {
@@ -22,4 +21,15 @@ export const fetchOMSData = async (indicator: string, country: string) => {
         console.error("Error OMS Service:", error);
         throw error;
     }
+};
+
+// Crea un nuevo registro de salud en la base de datos 
+export const createHealthRecord = async (data: Partial<IHealth>) => {
+    const newRecord = new HealthModel(data);
+    return await newRecord.save();
+};
+
+// Obtiene todos los registros de salud guardados
+export const getAllHealthRecords = async () => {
+    return await HealthModel.find(); 
 };

@@ -1,4 +1,3 @@
-// src/controllers/healthController.ts
 import { Request, Response } from 'express';
 import * as healthService from '../services/healthService';
 
