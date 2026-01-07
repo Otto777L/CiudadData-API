@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import transitRoutes from './routes/transitRoutes';
+import geoRoutes from './routes/geoRoutes';
+import healthRoutes from './routes/healthRoutes';
 
 dotenv.config();
 
@@ -14,6 +16,8 @@ app.use(express.json());
 
 // Rutas
 app.use('/transit', transitRoutes);
+app.use('/geo', geoRoutes);
+app.use('/health', healthRoutes);
 
 // Conexión a Base de Datos y arranque del servidor
 console.log("⏳ Intentando conectar a MongoDB...");
