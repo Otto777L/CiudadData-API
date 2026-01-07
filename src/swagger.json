@@ -1,0 +1,162 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CiudadData API",
+    "version": "1.0.0",
+    "description": "API para gestión de datos de ciudad, transporte y salud."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/geo/city": {
+      "post": {
+        "summary": "Guardar una ciudad en la base de datos",
+        "tags": ["Geografía"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "example": "Caracas" },
+                  "pais": { "type": "string", "example": "Venezuela" },
+                  "coords": {
+                    "type": "object",
+                    "properties": {
+                      "lat": { "type": "number", "example": 10.48 },
+                      "lng": { "type": "number", "example": -66.90 }
+                    }
+                  },
+                  "poblacion": { "type": "number", "example": 2000000 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Ciudad guardada exitosamente" }
+        }
+      }
+    },
+    "/geo/saved": {
+      "get": {
+        "summary": "Ver lista de ciudades guardadas",
+        "tags": ["Geografía"],
+        "responses": {
+          "200": { "description": "Lista de ciudades" }
+        }
+      }
+    },
+    "/health/life-expectancy/{country}": {
+      "get": {
+        "summary": "Obtener Esperanza de Vida (Banco Mundial)",
+        "tags": ["Salud"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "country",
+            "required": true,
+            "description": "Código del país (ej: VE, CO, ES)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Datos obtenidos correctamente" }
+        }
+      }
+    },
+    "/health/mortality/{country}": {
+      "get": {
+        "summary": "Obtener Tasa de Mortalidad (Banco Mundial)",
+        "tags": ["Salud"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "country",
+            "required": true,
+            "description": "Código del país (ej: VE, CO, ES)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Datos obtenidos correctamente" }
+        }
+      }
+    },    
+    "/transit/incident": {
+      "post": {
+        "summary": "Reportar un incidente de tránsito",
+        "tags": ["Tránsito"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "example": "Choque" },
+                  "description": { "type": "string", "example": "Fuerte colisión en la autopista" },
+                  "location": { "type": "string", "example": "Autopista Valle-Coche" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Reporte creado" }
+        }
+      }
+    },
+    "/transit/incidents": {
+      "get": {
+        "summary": "Ver historial de incidentes",
+        "tags": ["Tránsito"],
+        "responses": {
+          "200": {
+            "description": "Lista de todos los incidentes reportados"
+          }
+        }
+      }
+    },
+    "/transit/routes/{city}": {
+      "get": {
+        "summary": "Obtener rutas de transporte (Solo Londres)",
+        "tags": ["Tránsito"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "city",
+            "required": true,
+            "description": "Nombre de la ciudad (Ej: London)",
+            "schema": { "type": "string", "example": "London" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de rutas encontradas" }
+        }
+      }
+    },
+    "/transit/eta": {
+      "get": {
+        "summary": "Tiempos de llegada a una parada (Londres)",
+        "tags": ["Tránsito"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stop_id",
+            "required": true,
+            "description": "ID de la parada (Ej: 940GZZLUVIC para Victoria)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Tiempos de llegada en tiempo real" }
+        }
+      }
+    }
+  }
+}

@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import transitRoutes from './routes/transitRoutes';
 import geoRoutes from './routes/geoRoutes';
 import healthRoutes from './routes/healthRoutes';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 
 dotenv.config();
 
@@ -14,6 +16,8 @@ const MONGO_URI = process.env.MONGO_URI || '';
 // Se usa para interpretar lo que contiene el archivo JSON en las solicitudes
 app.use(express.json());
 
+// Documentación Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Rutas
 app.use('/transit', transitRoutes);
 app.use('/geo', geoRoutes);
